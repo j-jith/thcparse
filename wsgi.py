@@ -162,7 +162,7 @@ and the <a href="http://www.litsoft.com/">Across Lite <code>puz</code></a> forma
 <p>The crossword puzzles, listed in a table below, are fetched from 
 <a href="http://www.thehindu.com/crossword/">The Hindu crosswords page</a> every time this page is 
 (re)loaded. Therefore, the puzzles listed in this page are up-to-date with the official website.</p>
-<p>The <code>ipuz</code> and <code>xpf</code> files downloaded from this page can be opened with any crossword 
+<p>The files downloaded from this page can be opened with any crossword 
 software that supports these formats. Two software which the author recommends are:</p>
 <ul>
 <li><a href="https://sourceforge.net/projects/wx-xword/">XWord</a> for PC(Linux/Windows), and</li>
