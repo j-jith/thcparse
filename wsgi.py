@@ -65,7 +65,6 @@ def application(env, start_response):
 
             status = '200 OK'
             response_headers = [('Content-Type', ctype), ('Content-Length', str(len(filecontent))), ('Content-Disposition', 'attachment; filename='+filename)]
-            print response_headers
             start_response(status, response_headers)
 
             return [filecontent]
