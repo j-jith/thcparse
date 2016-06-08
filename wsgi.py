@@ -131,7 +131,7 @@ def application(env, start_response):
                 td = etree.SubElement(tr, 'td')
                 etree.SubElement(td, 'a', href=''.join(['?xwd_url=',link,'&format=puz'])).text = 'puz'
             
-            response_mid = etree.tostring(doc, pretty_print=True)
+            response_mid = etree.tostring(doc, pretty_print=True, encoding="unicode")
 
         ctype = 'text/html'
         response_head = '''
@@ -184,7 +184,7 @@ Created by Jithin Jith on 2016-06-06.
 </footer>
 </main></body></html>'''
 
-        response_body = '\n'.join([response_head, response_mid, response_tail])
+        response_body = '\n'.join([response_head, str(response_mid), response_tail])
     
 
     response_body = response_body.encode('utf-8')
