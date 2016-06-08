@@ -1,10 +1,10 @@
 from setuptools import setup
 
-setup(name='YourAppName',
+setup(name='THCParse',
       version='1.0',
-      description='OpenShift App',
-      author='Your Name',
-      author_email='example@example.com',
-      url='http://www.python.org/sigs/distutils-sig/',
+      description='Convert The Hindu Crossword to ipuz and xpf format',
+      author='Jithin Jith',
+      author_email='j.jith@outlook.com',
+#      url='',
 #      install_requires=['Django>=1.3'],
      )
