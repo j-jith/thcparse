@@ -143,7 +143,7 @@ def application(env, start_response):
 <!-- CSS Reset -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 <!-- Milligram CSS minified -->
-<link rel="stylesheet" href="milligram.min.css">
+<link rel="stylesheet" href="static/milligram.min.css">
 <title>THCParse</title>
 </head>
 <body>
@@ -155,7 +155,7 @@ def application(env, start_response):
 The Hindu Crossword</a> puzzles to the popular open digital crossword formats - 
 <a href="http://www.ipuz.org/"><code>ipuz</code></a>(v 1.0) and 
 <a href="http://www.xwordinfo.com/XPF/"><code>xpf</code></a>(v 1.0), 
-and the <a href="http://www.litsoft.com/">Across Lite <code>puz</code></a> format(text; v 1.)</p>
+and the <a href="http://www.litsoft.com/">Across Lite <code>puz</code></a> format.</p>
 </section>
 </header>
 <section class="container">
