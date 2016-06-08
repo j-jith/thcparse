@@ -128,6 +128,7 @@ def generate_puz(xwd_url):
     # For binary version of .puz format
     puzbin = puz.Puzzle()
 
+    puzbin.preamble = b''
     puzbin.title = title + ": " + date
     puzbin.author = author
     puzbin.copyright = "The Hindu"
@@ -143,10 +144,9 @@ def generate_puz(xwd_url):
     puzbin.clues = clues_across_enum
     puzbin.clues.extend(clues_down_enum)
 
+    puzbin_out = puzbin.tobytes()
 
     filename = str(title.replace(' ','_').lower()+'.puz')
-
-    puzbin_out = puzbin.tobytes()
 
     return [puzbin_out, filename]
     
