@@ -71,13 +71,40 @@ def generate_puz(xwd_url):
             clues_down.append(replace_unicode(clue))
     
     for item in across_nums_tree[0]:
-        nums_across.append(item.get('data-clue-no'))
+        
+        data_clue_no = item.get('data-clue-no')
+        if len(data_clue_no) == 1:
+            nums_across.append('0' + data_clue_no + 'A')
+        else:
+            nums_across.append(data_clue_no + 'A')
+
         lens_across.append(item.xpath("span[@class='clueCount']/text()")[0])
     
     
     for item in down_nums_tree[0]:
-        nums_down.append(item.get('data-clue-no'))
+        
+        data_clue_no = item.get('data-clue-no')
+        if len(data_clue_no) == 1:
+            nums_down.append('0' + data_clue_no + 'D')
+        else:
+            nums_down.append(data_clue_no + 'D')
+        
         lens_down.append(item.xpath("span[@class='clueCount']/text()")[0])
+
+    # concatenate across and down clues, clue numbers and enumerations
+    clues = clues_across
+    clues.extend(clues_down)
+
+    nums = nums_across
+    nums.extend(nums_down)
+
+    lens = lens_across
+    lens.extend(lens_down)
+
+    # sort by clue numbers
+    clues_out = sorted((num, clue, enum) for num, clue, enum in zip(nums, clues, lens))
+
+    print(clues_out)
     
     
     n_rows = len(xwd_table[0])
@@ -138,11 +165,13 @@ def generate_puz(xwd_url):
     puzbin.solution = ''.join(xwd_sol)
     puzbin.fill = ''.join(xwd_grid)
 
-    clues_across_enum = [clue + ' (' + length + ')' for clue, length in zip(clues_across, lens_across)]
-    clues_down_enum = [clue + ' (' + length + ')' for clue, length in zip(clues_down, lens_down)]
+    #clues_across_enum = [clue + ' (' + length + ')' for clue, length in zip(clues_across, lens_across)]
+    #clues_down_enum = [clue + ' (' + length + ')' for clue, length in zip(clues_down, lens_down)]
 
-    puzbin.clues = clues_across_enum
-    puzbin.clues.extend(clues_down_enum)
+    #puzbin.clues = clues_across_enum
+    #puzbin.clues.extend(clues_down_enum)
+
+    puzbin.clues = [item[1] + ' (' + item[2] + ')' for item in clues_out]
 
     puzbin_out = puzbin.tobytes()
 
