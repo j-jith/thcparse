@@ -82,54 +82,56 @@ def application(env, start_response):
         except IOError:
             response_mid = "<h3>Error: Could not load "+url+"!</h3>";
         else:
-            links_raw = tree.xpath("//a[contains(@href, 'http://www.thehindu.com/crossword/the-hindu-crossword-')]/@href")
+            #links_raw = tree.xpath("//a[contains(@href, 'http://www.thehindu.com/crossword/the-hindu-crossword-')]/@href")
+            links_raw = tree.xpath("//a[contains(@href, 'http://www.thehindu.com/crossword/the-hindu-crossword-')]")
             
+            # link URL pattern
             pattern = 'http://www.thehindu.com/crossword/the-hindu-crossword-(\d{1,})/article(\d{1,}).ece'
             regexp = re.compile(pattern)
+
+            # title pattern
+            re0='Published\:\s+'
+            re1='((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Sept|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?))'	# Month 1
+            re2='.*?'	# Non-greedy match on filler
+            re3='((?:(?:[0-2]?\\d{1})|(?:[3][01]{1})))(?![\\d])'	# Day 1
+            re4='.*?'	# Non-greedy match on filler
+            re5='((?:(?:[1]{1}\\d{1}\\d{1}\\d{1})|(?:[2]{1}\\d{3})))(?![\\d])'	# Year 1
+            title_regexp = re.compile(re0+re1+re2+re3+re4+re5, re.IGNORECASE|re.DOTALL)
+
+            links_match = []
+            for link in links_raw:
+                if link.get('title'):
+                    m = regexp.search(link.get('href'))
+                    if m and m.group(0) not in links_match:
+                        m_title = title_regexp.search(link.get('title'))
+                        if m_title:
+                            links_match.append((m.group(1), m.group(0), m_title.group(1)+' '+m_title.group(2)+', '+m_title.group(3)))
+                        else:
+                            links_match.append((m.group(1), m.group(0), 'Date unknown'))
+
+            links_match = [x for x in sorted(links_match, reverse=True)]
             
-            links_match = [m.group(0) for x in links_raw for m in [regexp.search(x)] if m]
-            
-            links = [x for n,x in enumerate(links_match) if x not in links_match[:n]]
-            links_text = [' '.join(['THC', m.group(1)]) for x in links for m in [regexp.search(x)] if m]
             
             puz_div = etree.Element('section', id='puzzles')
             puz_div.set('class', 'container')
             doc = etree.ElementTree(puz_div)
             #body = etree.SubElement(html, 'body')
             
-            #etree.SubElement(body, 'h1').text = "Convert The Hindu Crossword to 'ipuz' and 'xpf' formats"
-            #etree.SubElement(body, 'p').text = "Download the ipuz/xpf files and solve the crossword on your PC/mobile."
-            #etree.SubElement(body, 'h3').text = "Software:"
-            #sw_list = etree.SubElement(body, 'ul')
-            #sw_pc = etree.SubElement(sw_list, 'li')
-            #sw_pc.text = "PC(Linux/Windows):    "
-            #etree.SubElement(sw_pc, 'a', href="https://sourceforge.net/projects/wx-xword/").text = "XWord"
-            #sw_mob = etree.SubElement(sw_list, 'li')
-            #sw_mob.text = "Mobile(Android):    "
-            #etree.SubElement(sw_mob, 'a', href="https://play.google.com/store/apps/details?id=com.kevinandhari.crosswordsplus&hl=en").text = "Crosswords Plus (only reads xpf)"
-            
             xheader = etree.SubElement(puz_div, 'h3')
             xheader.set('class', 'title')
             xheader.text = "Crossword puzzles:"
-            #ulist = etree.SubElement(puz_div, 'ul')
             xtable = etree.SubElement(puz_div, 'table')
             tbody = etree.SubElement(xtable, 'tbody')
-            for link, text in zip(links, links_text):
-                #li = etree.SubElement(ulist, 'li')
-                #li.text = text
-                #etree.SubElement(li, 'span').text = '   '
-                #etree.SubElement(li, 'a', href=''.join(['?xwd_url=',link,'&format=ipuz'])).text = 'ipuz'
-                #etree.SubElement(li, 'span').text = '   '
-                #etree.SubElement(li, 'a', href=''.join(['?xwd_url=',link,'&format=xpf'])).text = 'xpf'
+            for link in links_match:
                 tr = etree.SubElement(tbody, 'tr')
                 td = etree.SubElement(tr, 'td')
-                etree.SubElement(td, 'a', href=link).text = text
+                etree.SubElement(td, 'a', href=link[1]).text = "THC "+ link[0] + ": " + link[2]
                 td = etree.SubElement(tr, 'td')
-                etree.SubElement(td, 'a', href=''.join(['?xwd_url=',link,'&format=ipuz'])).text = 'ipuz'
+                etree.SubElement(td, 'a', href=''.join(['?xwd_url=',link[1],'&format=ipuz'])).text = 'ipuz'
                 td = etree.SubElement(tr, 'td')
-                etree.SubElement(td, 'a', href=''.join(['?xwd_url=',link,'&format=xpf'])).text = 'xpf'
+                etree.SubElement(td, 'a', href=''.join(['?xwd_url=',link[1],'&format=xpf'])).text = 'xpf'
                 td = etree.SubElement(tr, 'td')
-                etree.SubElement(td, 'a', href=''.join(['?xwd_url=',link,'&format=puz'])).text = 'puz'
+                etree.SubElement(td, 'a', href=''.join(['?xwd_url=',link[1],'&format=puz'])).text = 'puz'
             
             response_mid = etree.tostring(doc, pretty_print=True, encoding="unicode")
 
