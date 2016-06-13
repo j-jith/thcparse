@@ -82,7 +82,6 @@ def application(env, start_response):
         except IOError:
             response_mid = "<h3>Error: Could not load "+url+"!</h3>";
         else:
-            #links_raw = tree.xpath("//a[contains(@href, 'http://www.thehindu.com/crossword/the-hindu-crossword-')]/@href")
             links_raw = tree.xpath("//a[contains(@href, 'http://www.thehindu.com/crossword/the-hindu-crossword-')]")
             
             # link URL pattern
@@ -109,13 +108,11 @@ def application(env, start_response):
                         else:
                             links_match.append((m.group(1), m.group(0), 'Date unknown'))
 
-            #links_match = [x for x in sorted(links_match, reverse=True)]
+            links_match = [x for x in sorted(links_match, reverse=True)]
             
             
             puz_div = etree.Element('div', id='puzzles')
-            puz_div.set('class', 'container')
             doc = etree.ElementTree(puz_div)
-            #body = etree.SubElement(html, 'body')
             
             xheader = etree.SubElement(puz_div, 'h3')
             xheader.set('class', 'title')
