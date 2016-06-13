@@ -109,10 +109,10 @@ def application(env, start_response):
                         else:
                             links_match.append((m.group(1), m.group(0), 'Date unknown'))
 
-            links_match = [x for x in sorted(links_match, reverse=True)]
+            #links_match = [x for x in sorted(links_match, reverse=True)]
             
             
-            puz_div = etree.Element('section', id='puzzles')
+            puz_div = etree.Element('div', id='puzzles')
             puz_div.set('class', 'container')
             doc = etree.ElementTree(puz_div)
             #body = etree.SubElement(html, 'body')
@@ -122,7 +122,8 @@ def application(env, start_response):
             xheader.text = "Crossword puzzles:"
 
             # crossword table
-            xtable = etree.SubElement(puz_div, 'table', id='xwd-table')
+            xtable = etree.SubElement(puz_div, 'table', id='xwd-table', cellspacing='0', width='100%')
+            xtable.set('class', 'table table-striped table-bordered')
             # table head
             thead = etree.SubElement(xtable, 'thead')
             tr = etree.SubElement(thead, 'tr')
@@ -150,64 +151,72 @@ def application(env, start_response):
 <!DOCTYPE html>
 <html>
 <head>
-<!-- Google Fonts -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 <!-- CSS Reset -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
-<!-- Milligram CSS minified -->
-<link rel="stylesheet" href="static/milligram.min.css">
 <!-- jQuery -->
-<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <!-- jQuery dataTables plugin -->
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"> -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $('#xwd-table').DataTable( {
         "pagingType": "full_numbers",
-        "pageLength": 10
+        "pageLength": 10,
+        "columnDefs": [
+        { "orderable": false, "targets": [1, 2, 3] }
+        ],
+        "order": [ ]
     } );
 } );
 </script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>THCParse</title>
 </head>
 <body>
-<main class="wrapper">
-<header class="header">
-<section class="container">
-<h2 class="title">THCParse</h2>
-<p class="description">This page converts <a href="http://www.thehindu.com/crossword/">
+<div class="container">
+
+<h2 class="page_title">THCParse</h2>
+
+<div class="info">
+This page converts <a href="http://www.thehindu.com/crossword/">
 The Hindu Crossword</a> puzzles to the popular open digital crossword formats - 
 <a href="http://www.ipuz.org/"><code>ipuz</code></a>(v 1.0) and 
 <a href="http://www.xwordinfo.com/XPF/"><code>xpf</code></a>(v 1.0), 
-and the <a href="http://www.litsoft.com/">Across Lite <code>puz</code> format.</p>
-</section>
-</header>
-<section class="container">
+and the <a href="http://www.litsoft.com/">Across Lite <code>puz</code> format.</a></p>
+
 <p>The crossword puzzles, listed in a table below, are fetched from 
 <a href="http://www.thehindu.com/crossword/">The Hindu crosswords page</a> every time this page is 
 (re)loaded. Therefore, the puzzles listed in this page are up-to-date with the official website.</p>
+
 <p>The files downloaded from this page can be opened with any crossword 
 software that supports the corresponding format. Two software which the author recommends are:</p>
+
 <ul>
 <li><a href="https://sourceforge.net/projects/wx-xword/">XWord</a> for PC(Linux/Windows), and</li>
 <li><a href="https://play.google.com/store/apps/details?id=com.kevinandhari.crosswordsplus&amp;hl=en">Crosswords 
 Plus</a> for Mobile(Android) [<i>currently, this software cannot read the <code>ipuz</code> 
 files downloaded from this site</i>].</li>
 </ul>
-</section>
+</div> <!-- info -->
 '''
 
         response_tail = '''
+<hr>
+
 <footer class="footer">
-<section class="container">
 <p>
 Created by Jithin Jith on 2016-06-06. 
-<!-- Page designed using the <a href="https://milligram.github.io/">Milligram</a> CSS framework.</p> -->
 </p>
-</section>
 </footer>
-</main></body></html>'''
+</div> <!-- container -->
+</body>
+</html>'''
 
         response_body = '\n'.join([response_head, str(response_mid), response_tail])
     
