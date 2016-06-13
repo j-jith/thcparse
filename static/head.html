@@ -9,6 +9,19 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 <!-- Milligram CSS minified -->
 <link rel="stylesheet" href="static/milligram.min.css">
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+<!-- jQuery dataTables plugin -->
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#xwd-table').DataTable( {
+        "pagingType": "full_numbers",
+        "pageLength": 10
+    } );
+} );
+</script>
 <title>THCParse</title>
 </head>
 <body>

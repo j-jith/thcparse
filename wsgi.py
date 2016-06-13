@@ -120,7 +120,17 @@ def application(env, start_response):
             xheader = etree.SubElement(puz_div, 'h3')
             xheader.set('class', 'title')
             xheader.text = "Crossword puzzles:"
-            xtable = etree.SubElement(puz_div, 'table')
+
+            # crossword table
+            xtable = etree.SubElement(puz_div, 'table', id='xwd-table')
+            # table head
+            thead = etree.SubElement(xtable, 'thead')
+            tr = etree.SubElement(thead, 'tr')
+            etree.SubElement(tr, 'th').text = 'Crossword'
+            etree.SubElement(tr, 'th').text = 'ipuz'
+            etree.SubElement(tr, 'th').text = 'xpf'
+            etree.SubElement(tr, 'th').text = 'puz'
+            # table body
             tbody = etree.SubElement(xtable, 'tbody')
             for link in links_match:
                 tr = etree.SubElement(tbody, 'tr')
@@ -146,6 +156,19 @@ def application(env, start_response):
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 <!-- Milligram CSS minified -->
 <link rel="stylesheet" href="static/milligram.min.css">
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+<!-- jQuery dataTables plugin -->
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#xwd-table').DataTable( {
+        "pagingType": "full_numbers",
+        "pageLength": 10
+    } );
+} );
+</script>
 <title>THCParse</title>
 </head>
 <body>
@@ -157,7 +180,7 @@ def application(env, start_response):
 The Hindu Crossword</a> puzzles to the popular open digital crossword formats - 
 <a href="http://www.ipuz.org/"><code>ipuz</code></a>(v 1.0) and 
 <a href="http://www.xwordinfo.com/XPF/"><code>xpf</code></a>(v 1.0), 
-and the <a href="http://www.litsoft.com/">Across Lite <code>puz</code></a> format.</p>
+and the <a href="http://www.litsoft.com/">Across Lite <code>puz</code> format.</p>
 </section>
 </header>
 <section class="container">
