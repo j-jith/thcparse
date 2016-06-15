@@ -7,7 +7,7 @@ import puz
 #xwd_url = 'http://www.thehindu.com/crossword/the-hindu-crossword-11716/article8677222.ece'
 
 def replace_unicode(string):
-    stuff = {u'\u2018': "'", u'\u2019': "'", u'\u2013': '-'}
+    stuff = {u'\u2018': "'", u'\u2019': "'", u'\u2013': '--', u'\u2014': '---'}
     for key in stuff:
         string = string.replace(key, stuff[key])
     return string
