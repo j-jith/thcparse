@@ -1,16 +1,30 @@
 from lxml import etree
 import puz
+import re
 
 #xwd_url = "The Hindu Crossword 11718 - The Hindu.html"
 #xwd_url = 'http://www.thehindu.com/crossword/the-hindu-crossword-11718/article8686670.ece'
 #xwd_url = 'http://www.thehindu.com/crossword/the-hindu-crossword-11717/article8681827.ece'
 #xwd_url = 'http://www.thehindu.com/crossword/the-hindu-crossword-11716/article8677222.ece'
 
+ENCODING = 'ISO-8859-1'
+
 def replace_unicode(string):
-    stuff = {u'\u2018': "'", u'\u2019': "'", u'\u2013': '--', u'\u2014': '---'}
-    for key in stuff:
-        string = string.replace(key, stuff[key])
-    return string
+    # stuff = {u'\u2018': "'", u'\u2019': "'", u'\u2013': '--', u'\u2014': '---'}
+    # for key in stuff:
+    #     string = string.replace(key, stuff[key])
+
+    string = re.sub(u'[\u02bc\u2018\u2019\u201a\u201b\u2039\u203a\u300c\u300d]', "'", string) # fancy single quotes
+    string = re.sub(u'[\u00ab\u00bb\u201c\u201d\u201e\u201f\u300e\u300f]', '"', string) # fancy double quotes
+    string = re.sub(u'[\u2013]', '--', string) # en dash
+    string = re.sub(u'[\u2014]', '---', string) # em dash
+    string = re.sub(u'[\u00a9\u24b8\u24d2]', '(c)', string) # copyright symbol
+    string = re.sub(u'[\u00ae\u24c7]', '(r)', string) # registered symbol
+    string = re.sub(u'[\u2117\u24c5\u24df]', '(p)', string) # sound recording copyright symbol
+    string = re.sub(u'[\u2120]', '(sm)', string) #service mark symbol 
+    string = re.sub(u'[\u2122]', '(tm)', string) #trade mark symbol 
+
+    return string.encode(ENCODING, 'replace').decode(ENCODING)
 
 def generate_puz(xwd_url):
     
@@ -104,7 +118,7 @@ def generate_puz(xwd_url):
     # sort by clue numbers
     clues_out = sorted((num, clue, enum) for num, clue, enum in zip(nums, clues, lens))
 
-    print(clues_out)
+    # print(clues_out) # to debug unicode error in clue
     
     
     n_rows = len(xwd_table[0])
