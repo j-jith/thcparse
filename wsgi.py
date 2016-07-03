@@ -222,7 +222,7 @@ files downloaded from this site</i>].</li>
 
 <footer class="footer">
 <p>
-Created by Jithin Jith on 2016-06-06. 
+See source at <a href="https://github.com/j-jith/thcparse">github.com/j-jith/thcparse</a>. 
 </p>
 </footer>
 </div> <!-- container -->
