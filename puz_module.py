@@ -18,6 +18,7 @@ def replace_unicode(string):
     string = re.sub(u'[\u00ab\u00bb\u201c\u201d\u201e\u201f\u300e\u300f]', '"', string) # fancy double quotes
     string = re.sub(u'[\u2013]', '--', string) # en dash
     string = re.sub(u'[\u2014]', '---', string) # em dash
+    string = re.sub(u'[\u2026]', '...', string) # horizontal ellipsis
     string = re.sub(u'[\u00a9\u24b8\u24d2]', '(c)', string) # copyright symbol
     string = re.sub(u'[\u00ae\u24c7]', '(r)', string) # registered symbol
     string = re.sub(u'[\u2117\u24c5\u24df]', '(p)', string) # sound recording copyright symbol
