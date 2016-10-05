@@ -39,7 +39,12 @@ def generate_puz(xwd_url):
     
     title = replace_unicode(tree.xpath("//h1[@class='detail-title']/text()")[0])
     
-    author = replace_unicode(tree.xpath("//span[@class='artauthor']/ul/li/a/text()")[0])
+    author = tree.xpath("//span[@class='artauthor']/ul/li/a/text()")
+
+    if author:
+        author = replace_unicode(author[0])
+    else:
+        author = ''
     
     xwd_table = tree.xpath("//table[@class='blCrossword cwTable']/tbody")
     if xwd_table == []: # if <tbody> tag is not present 
