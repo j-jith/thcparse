@@ -35,7 +35,7 @@ def generate_xpf(xwd_url):
     author = tree.xpath("//span[@class='artauthor']/ul/li/a/text()")
 
     if author:
-        author = replace_unicode(author[0])
+        author = author[0]
     else:
         author = ''
     
